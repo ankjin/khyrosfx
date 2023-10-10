@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 import { PageLayout } from "../common/PageLayout"
 
 export function Brokers() {
@@ -42,9 +43,9 @@ export function Brokers() {
                     We prefer you to work with below brokers as it will be easy for us to manage your accounts due to the similarities in Pairs, Spreads & Other Terms and conditions. However, if you wish to continue with your preferred broker, we are still open to collaborate with you.
                     </p>
                     <div className="mt-8 flex items-center gap-x-6">
-                      <a href="2" className="text-sm font-semibold text-gray-900">
+                      <NavLink to="/contact-forms" className="text-sm font-semibold text-gray-900">
                         Contact us <span aria-hidden="true">&rarr;</span>
-                      </a>
+                      </NavLink>
                     </div>
                   </div>
 
