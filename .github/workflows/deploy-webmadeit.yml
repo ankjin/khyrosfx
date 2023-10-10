@@ -1,4 +1,4 @@
-name: Node.js CI to 1nt3r
+name: Deploy to WebMadeIt
 
 on: workflow_dispatch
 #  push:
