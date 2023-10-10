@@ -1,14 +1,14 @@
 import { PageLayout } from "../common/PageLayout"
 
-export function PageOne() {
+export function AboutUs() {
     return (
         <PageLayout>
-            <OneContent />
+            <AboutUsContent />
         </PageLayout>
     )
   }
   
-  function OneContent() {
+  function AboutUsContent() {
     return (
               <>
         {/* Hero section */}

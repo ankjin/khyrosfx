@@ -1,12 +1,10 @@
 import { TopHeader } from "./TopHeader";
-import { useState } from 'react'
 import { FooterSimple } from "./FooterSimple";
 
 const navigation = [
     { name: 'About Us', href: '/about-us' },
     { name: 'Brokers', href: '/brokers' },
-    { name: 'Our Performance', href: '/our-performance' },
-    { name: 'Company', href: '/page_three' },
+    { name: 'Our Performance', href: '/our-performance' }
   ]
 
 
@@ -122,14 +120,10 @@ const navigation = [
 
 export function PageLayout({children}) {
 
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <div className="bg-white">
-      <TopHeader
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-        navigation={navigation}
+      <TopHeader navigation={navigation}
       />
 
       <main className="isolate">
