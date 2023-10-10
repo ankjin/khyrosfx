@@ -40,4 +40,4 @@ jobs:
         username: ${{ secrets.FTP_XTRADER_USR }}
         password: ${{ secrets.FTP_XTRADER_PWD }}
         local-dir: ./build/
-        server-dir: ./react-gha/
+        server-dir: ./khyrosfx.com/
