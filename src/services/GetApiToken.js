@@ -1,4 +1,4 @@
-export async function GetToken() {
+export async function GetApiToken() {
     try {
       //const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {signal: controller.signal})
         // POST request using fetch inside useEffect React hook

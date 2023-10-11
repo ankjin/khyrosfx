@@ -1,9 +1,9 @@
-import { GetToken } from "./GetToken";
+import { GetApiToken } from "./GetApiToken";
 
-export async function SendEmail({fomrsModel}) {
+export async function SendEmail({fomrsModel}, recaptchaToken) {
 
-  const tkn = await GetToken();
-  
+  const tkn = await GetApiToken();
+  console.log(recaptchaToken, " -----------recaptchaToken")
 
   async function Sendmail() {
     try {
@@ -26,7 +26,7 @@ export async function SendEmail({fomrsModel}) {
           })
 
           };
-          const res = await fetch(`${process.env.REACT_APP_BASE_API_URL}Fx/SendEmail`, requestOptions)
+          const res = await fetch(`${process.env.REACT_APP_BASE_API_URL}Fx/SendEmail?token=${recaptchaToken}`, requestOptions)
               
               //console.log(await res.text())
     
