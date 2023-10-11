@@ -29,6 +29,7 @@ jobs:
         echo REACT_APP_BASE_API_URL=${{ secrets.REACT_APP_BASE_API_URL }} >> .env
         echo REACT_APP_TOKEN_USR=${{ secrets.REACT_APP_TOKEN_USR }} >> .env
         echo REACT_APP_TOKEN_PWD=${{ secrets.REACT_APP_TOKEN_PWD }} >> .env
+        echo REACT_APP_RECAPTCHA_SITEKEY=${{ secrets.REACT_APP_RECAPTCHA_SITEKEY }} >> .env
 
     - run: npm ci
     - run: npm run build --if-present
