@@ -38,8 +38,8 @@ export function ContactForms() {
           })
           .then((recaptchaToken) => {
             //submitData(token);
-            SendEmail({fomrsModel}, recaptchaToken)
-            console.log("start: ", recaptchaToken, " :g-receptcha-token");
+            SendEmail({fomrsModel, setLoading, setFirstName, setLastName, setPhoneNumber, setEmailAddress, setMessage}, recaptchaToken)
+            //console.log("start: ", recaptchaToken, " :g-receptcha-token");
           });
       });
 
@@ -70,12 +70,12 @@ export function ContactForms() {
   
       //console.log(fomrsModel)
       
-      setLoading(false);
-      setFirstName("")
-      setLastName("")
-      setPhoneNumber("")
-      setEmailAddress("")
-      setMessage("")
+      //setLoading(false);
+      // setFirstName("")
+      // setLastName("")
+      // setPhoneNumber("")
+      // setEmailAddress("")
+      // setMessage("")
     }
    
     return (

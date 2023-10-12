@@ -1,6 +1,6 @@
 import { GetApiToken } from "./GetApiToken";
 
-export async function SendEmail({fomrsModel}, recaptchaToken) {
+export async function SendEmail({fomrsModel, setLoading, setFirstName, setLastName, setPhoneNumber, setEmailAddress, setMessage}, recaptchaToken) {
 
   const tkn = await GetApiToken();
   console.log(recaptchaToken, " -----------recaptchaToken")
@@ -35,18 +35,26 @@ export async function SendEmail({fomrsModel}, recaptchaToken) {
       if(!res.ok) {
         throw new Error("Something went wrong with fetching movies...")
       }
-      const data = await res.json()
-      if(data.Response === 'False') {
-        throw new Error("Movie not found.")
-      }
-      console.log(data)
-      //console.log(movies) // return empty as it is in stale(or previous value) state        
+      setFirstName("")   
+      setLastName("")
+      setPhoneNumber("")
+      setEmailAddress("")
+      setMessage("")
+      console.log(res, "ressuullt")
+      // const data = await res.json()
+      // if(data.Response === 'False') {
+      //   throw new Error("Movie not found.")
+      // }
+      //console.log(data, "looogggg data")
+      //console.log(movies) // return empty as it is in stale(or previous value) state
     } catch (err) {
       if(err.name !== "AbortError") {
-      console.error(err.message)
+      console.error(err.message, "not abort error")
       }
     } finally {
       console.log("finally...")
+      setLoading(false)
+
     }
   }
   Sendmail()
