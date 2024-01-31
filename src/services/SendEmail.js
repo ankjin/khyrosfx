@@ -2,29 +2,30 @@ import { GetApiToken } from "./GetApiToken";
 
 export async function SendEmail({fomrsModel, setLoading, setFirstName, setLastName, setPhoneNumber, setEmailAddress, setMessage}, recaptchaToken) {
 
-  const tkn = await GetApiToken();
+  const apiToken = await GetApiToken();
   console.log(recaptchaToken, " -----------recaptchaToken")
+  console.log("fromsModel stringify: ", fomrsModel);
 
+  const bdy = {
+    "FirstName": fomrsModel.firstName,
+    "LastName": fomrsModel.lastName,
+    "Mobile": fomrsModel.phoneNumber,
+    "Email": fomrsModel.emailAddress,
+    "FormSubject": "Inquiry from Website",
+    "MessageBody": fomrsModel.message,
+  }
+
+  console.log("fromsModel Body: ", bdy);
+  //console.log("fromsModel Stringyfy: ", bdy);
   async function Sendmail() {
     try {
-    //   console.log(fomrsModel, "from sendEmail")
-    
-    
         const requestOptions = {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + tkn,
+            'Authorization': `Bearer ${apiToken}`,
           },
-          body: JSON.stringify({
-            "FirstName": fomrsModel.firstName,
-            "LastName": fomrsModel.lastName,
-            "Mobile": fomrsModel.phoneNumber,
-            "Email": fomrsModel.emailAddress,
-            "FormSubject": "Inquiry from Website",
-            "MessageBody": fomrsModel.message,
-          })
-
+          body: JSON.stringify(bdy)
           };
           const res = await fetch(`${process.env.REACT_APP_BASE_API_URL}Fx/SendEmail?token=${recaptchaToken}`, requestOptions)
               

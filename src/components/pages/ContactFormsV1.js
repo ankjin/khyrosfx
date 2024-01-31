@@ -1,51 +1,8 @@
-import { useState, useReducer, useEffect } from "react"
+import { useState } from "react"
 import { PageLayout } from "../common/PageLayout"
 import { SendEmail } from "../../services/SendEmail"
 
-const initialState = {
-  status: "loading", // loading, error, ready, active, finished
-  isLoading: false,
-  formModel: {},
-  recaptchaToken: ""
-}
-
-function reducer(state, action) {
-  console.log(action.type)
-  switch(action.type){
-      case "submitting":
-          return {...state, 
-            isLoading: true,
-            formModel: action.payload
-          }
-      case "recaptchaTokenReceived":
-        return {
-          ...state, 
-          status: "ready",
-          recaptchaToken: action.payload
-        }
-      case "sendForms":
-        return {...state, 
-          formsModel: action.payload,
-          isLoading: false
-      }
-      case "submitted":
-        return {...state,
-          isLoading: action.payload
-      }     
-      default:
-        throw new Error("Action Unknown")
-  }
-}
-
-const fmModel = {
-  firstName: "",
-  lastName: "",
-  phoneNumber: 0,
-  emailAddress: "",
-  message: ""
-}
-
-export function ContactForms() {
+export function ContactFormsV1() {
     return (
         <PageLayout>
             <SubmitForm />
@@ -54,50 +11,36 @@ export function ContactForms() {
   }
   
   function SubmitForm() {
-    // destructuring the state
-    const [{status, isLoading, formsModel, recaptchaToken}, dispatch] = useReducer(reducer, initialState)
-    const [formData, setFormData] = useState(fmModel)
-
-    // const [firstName, setFirstName] = useState("")
-    // const [lastName, setLastName] = useState("")
-    // const [phoneNumber, setPhoneNumber] = useState("")
-    // const [emailAddress, setEmailAddress] = useState("")
-    // const [message, setMessage] = useState("")
-
-    
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+    const [emailAddress, setEmailAddress] = useState("")
+    const [message, setMessage] = useState("")
 
     const [loading, setLoading] = useState(false);
     // const [response, setResponse] = useState(null);
 
     function handleFormSubmit(e) {
       e.preventDefault()
-      console.log(formData)
-      if(!formData.firstName && !formData.lastName) return
-      setFormData(fmModel)
+
+      if(!firstName && !lastName) return
   
-      // const model = {
-      //   firstName, lastName, phoneNumber, emailAddress, message
-      // }
-
-
-      // dispatch({type: "submitting", payload: ""})
+      const fomrsModel = {
+        firstName, lastName, phoneNumber, emailAddress, message
+      }
+      setLoading(true);
       
-      // window.grecaptcha.ready(() => {
-      //   window.grecaptcha
-      //     .execute(process.env.REACT_APP_RECAPTCHA_SITEKEY, {
-      //       action: "submit",
-      //     })
-      //     .then((recaptchaToken) => {
-
-      //       dispatch({type: "recaptchaTokenReceived", payload: recaptchaToken})
-
-      //       //submitData(token);
-      //       //SendEmail({fomrsModel, setLoading, setFirstName, setLastName, setPhoneNumber, setEmailAddress, setMessage}, recaptchaToken)
-      //       //console.log("start: ", recaptchaToken, " :g-receptcha-token");
-      //     });
-      // });
-
-      //dispatch({type: "sendForms", payload: fomrsModel})
+      window.grecaptcha.ready(() => {
+        window.grecaptcha
+          .execute(process.env.REACT_APP_RECAPTCHA_SITEKEY, {
+            action: "submit",
+          })
+          .then((recaptchaToken) => {
+            //submitData(token);
+            SendEmail({fomrsModel, setLoading, setFirstName, setLastName, setPhoneNumber, setEmailAddress, setMessage}, recaptchaToken)
+            //console.log("start: ", recaptchaToken, " :g-receptcha-token");
+          });
+      });
 
       // const submitData = (token) => {
       //   // call a backend API to verify reCAPTCHA response
@@ -116,15 +59,6 @@ export function ContactForms() {
       //       setResponse(res);
       //     });
       // };
-
-
-
-
-
-      //onAddItem(newItem)
-      //SendEmail({fomrsModel})
-  
-      //console.log(fomrsModel)
       
       //setLoading(false);
       // setFirstName("")
@@ -133,16 +67,7 @@ export function ContactForms() {
       // setEmailAddress("")
       // setMessage("")
     }
-    function handleChange(e) {
-      const {name, value} = e.target
-      setFormData({
-        ...formData,
-        [name]: value
-      })
-    }
-
-    
-
+   
     return (
       <>
               <div className="relative pt-14">
@@ -162,7 +87,7 @@ export function ContactForms() {
             <div className="mx-auto max-w-xl px-6 lg:px-8">
 
 
-      <form onSubmit={handleFormSubmit}>
+      <form>
         <div className="space-y-12">
 
   
@@ -182,9 +107,10 @@ export function ContactForms() {
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="firstName"
-                      id="firstName"
-                      onChange={handleChange}
+                      name="first-name"
+                      id="first-name"
+                      autoComplete="family-name"
+                      value={firstName} onChange={(e) => setFirstName(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -197,53 +123,56 @@ export function ContactForms() {
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="lastName"
-                      id="lastName"
-                      onChange={handleChange}
+                      name="last-name"
+                      id="last-name"
+                      autoComplete="family-name"
+                      value={lastName} onChange={(e) => setLastName(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
     
                 <div className="sm:col-span-3">
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
                     Phone
                   </label>
                   <div className="mt-2">
                     <input
-                      id="phoneNumber"
-                      name="phoneNumber"
+                      id="phone"
+                      name="phone"
                       type="text"
-                      onChange={handleChange}
+                      autoComplete="phone"
+                      value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
                 <div className="sm:col-span-3">
-                  <label htmlFor="emailAddress" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                     Email address
                   </label>
                   <div className="mt-2">
                     <input
-                      id="emailAddress"
-                      name="emailAddress"
+                      id="email"
+                      name="email"
                       type="email"
-                      onChange={handleChange}
+                      autoComplete="email"
+                      value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
 
                 <div className="col-span-full">
-                  <label htmlFor="message" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
                     Message
                   </label>
                   <div className="mt-2">
                     <textarea
-                      id="message"
-                      name="message"
+                      id="about"
+                      name="about"
                       rows={3}
-                      onChange={handleChange}
+                      value={message} onChange={(e) => setMessage(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -259,15 +188,15 @@ export function ContactForms() {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           {/* <button type="button" className="text-sm font-semibold leading-6 text-rose-900">
             Cancel
-          </button>  */}
+          </button> 
           <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Submit
-          </button>
+          </button> */}
           
-          <button onClick={() => dispatch({type: "loading"})} disabled={loading} className="rounded-md bg-amber-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button onClick={handleFormSubmit} disabled={loading} className="rounded-md bg-amber-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             {loading && <svg aria-hidden="true" role="status" className="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"></path>
             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"></path>

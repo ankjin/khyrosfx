@@ -41,7 +41,7 @@ export function Brokers() {
                   </div>
 
                   <div className="bg-white">
-                    <div div className="my-10 mx-auto max-w-xl lg:max-w-none text-center">
+                    <div className="my-10 mx-auto max-w-xl lg:max-w-none text-center">
                         <h2 className="font-display text-xl font-semibold text-neutral-950">Would you like open account with our preferred broker?</h2>
                     </div>
                     <div className="mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8">
